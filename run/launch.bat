@@ -1,0 +1,1 @@
+java -Dfabric.skipMcProvider=true -classpath "helloworld-1.0.0.jar;modloader-1.0.0.jar;deps/*" net.fabricmc.loader.launch.knot.KnotClient

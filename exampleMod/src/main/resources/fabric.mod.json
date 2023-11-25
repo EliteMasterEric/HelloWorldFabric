@@ -1,0 +1,27 @@
+{
+    "schemaVersion": 1,
+    "id": "examplemod",
+    "version": "${version}",
+    "name": "Hello World Example Mod",
+    "description": "An example mod for Hello World app",
+    "authors": [
+      "EliteMasterEric"
+    ],
+    "contact": {
+      "homepage": "https://elitemastereric.com"
+    },
+    "license": "MIT",
+    "environment": "*",
+    "entrypoints": {
+      "main": [
+        "com.elitemastereric.examplemod.ExampleMod"
+      ]
+    },
+    "mixins": [
+      "examplemod.mixins.json"
+    ],
+    "depends": {
+      "fabricloader": ">=0.13.3",
+      "helloworld": "1.0.*"
+    }
+  }

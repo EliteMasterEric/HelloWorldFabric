@@ -1,0 +1,85 @@
+/*
+ * This file contains an application project which integrates the Fabric mod loader.
+ */
+
+plugins {
+    // Apply the application plugin to add support for building a CLI application in Java.
+    id 'java-library'
+}
+
+repositories {
+    // Maven Central for core dependencies
+    mavenCentral()
+
+    // SpongePowered Maven repository for Mixins
+    maven {
+        url "https://repo.spongepowered.org/maven/"
+    }
+    // FabricMC Maven repository for Fabric Loader
+    maven {
+        url "https://maven.fabricmc.net/"
+    }
+}
+
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
+
+version = '1.0.0'
+group = "com.elitemastereric"
+archivesBaseName = "modloader"
+
+dependencies {
+    api "com.google.guava:guava:21.0"
+    api "com.google.code.gson:gson:2.8.7"
+
+    // Fabric dependencies
+    api "net.fabricmc:fabric-loader:0.13.3"
+    api "net.fabricmc:tiny-mappings-parser:0.2.2.14"
+    api "net.fabricmc:access-widener:2.1.0"
+
+    // Mixin dependencies
+    api "org.ow2.asm:asm:9.2"
+    api "org.ow2.asm:asm-analysis:9.2"
+    api "org.ow2.asm:asm-commons:9.2"
+    api "org.ow2.asm:asm-tree:9.2"
+    api "org.ow2.asm:asm-util:9.2"
+    api 'org.spongepowered:mixin:0.8.5'
+
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+    }
+}
+
+jar {
+	manifest {
+		attributes(
+			'Class-Path': configurations.runtimeClasspath.collect { it.getName() }.join(' '),
+			'Specification-Version': 8.0,
+			'Multi-Release': 'true'
+		)
+	}
+}
+
+task copyDependencies(type: Copy) {
+  group 'build'
+  from configurations.runtimeClasspath
+  into "build/libs/deps/"
+}
+
+assemble {
+    group 'build'
+    dependsOn 'jar'
+    dependsOn 'copyDependencies'
+}
+
+task buildAndCopy(type: Copy) {
+  group 'build'
+  dependsOn 'assemble'
+  from "build/libs/"
+  into "../run/"
+}
